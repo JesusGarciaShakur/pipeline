@@ -1,0 +1,41 @@
+name: Release Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+      - name: Trigger Jenkins Job
+        run: |
+          curl -X POST "http://${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}@${{ secrets.JENKINS_URL }}/job/${{ secrets.JENKINS_JOB }}/build"
+
+      - name: Update Jira Issue
+        run: |
+          curl -D- \
+            -u ${{ secrets.JIRA_EMAIL }}:${{ secrets.JIRA_API_TOKEN }} \
+            -X POST \
+            --data "{ \"body\": \"Release generado desde GitHub Actions.\" }" \
+            -H "Content-Type: application/json" \
+            ${{ secrets.JIRA_URL }}/rest/api/3/issue/${{ secrets.JIRA_
