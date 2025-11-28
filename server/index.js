@@ -9,7 +9,10 @@ const app = express();
 // CORS obligatorio
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",                 // para tu desarrollo
+      "https://groovix2.vercel.app",           // tu front en producción (cámbialo)
+    ],
     credentials: true,
   })
 );
