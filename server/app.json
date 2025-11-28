@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "00570b51-95eb-4dd4-bb7c-fc39e42ec971"
+      }
+    },
+    "android": {
+      "package": "com.donshakur.server"
+    }
+  }
+}
